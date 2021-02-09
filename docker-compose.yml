@@ -1,0 +1,56 @@
+version: '2.4'
+services:
+  gpu-goe:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - /usr/users/burg:/usr/users/burg
+      - /usr/users/agecker:/usr/users/agecker
+      - /user/burg/data:/data
+    env_file: /usr/users/burg/.env
+    runtime: nvidia
+    environment:
+      - DISPLAY=$DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=0
+      - GPU=0
+      - USER=burg
+      - NB_UID=617278
+      - NB_USER=burg
+      - NB_GID=47162
+      - NB_GROUP=ECKERLAB
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+      - CHOWN_HOME=yes
+    container_name: burg-gpu-0
+    shm_size: 128G
+    user: root
+    working_dir: /usr/users/
+  
+  cpu-goe:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "9999:8888"
+    volumes:
+      - /usr/users/burg:/usr/users/burg
+      - /usr/users/agecker:/usr/users/agecker
+      - /user/burg/data:/data
+    env_file: /usr/users/burg/.env
+    environment:
+      - DISPLAY=$DISPLAY
+      - USER=BURG
+      - NB_UID=617278
+      - NB_USER=burg
+      - NB_GID=47162
+      - NB_GROUP=ECKERLAB
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+      - CHOWN_HOME=yes
+    container_name: burg-cpu
+    shm_size: 128G
+    user: root
+    working_dir: /usr/users/
